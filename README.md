@@ -160,25 +160,3 @@ Faders:Destroy(myFader)
 ---
 
 
-
-
-### Adding Images in Rich Text on GitHub
-
-To add images to a GitHub README or other markdown-supported files, use the following syntax:
-
-```markdown
-![Alt text](URL_to_image)
-```
-
-- **Alt text**: This is a description of the image. It is displayed when the image cannot be shown or as hover text.
-- **URL_to_image**: The direct URL to the image you want to display.
-
-**Example**:
-
-```markdown
-![Roblox Logo](https://upload.wikimedia.org/wikipedia/commons/6/69/Roblox_Logo.png)
-```
-
-This code will display an image of the Roblox logo in your GitHub markdown file.
-
-Feel free to copy and paste this text directly into Discord or your GitHub documentation.

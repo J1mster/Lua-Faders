@@ -5,6 +5,8 @@
 **Faders Module Documentation**
 
 ---
+Summary: TweenBases and FaderBases are extremily similar. Most of their methods are the exact same. The primary differences are that FaderBase does not inherit from `Instance`, They have different params, and FaderBase does not have a `PlaybackState` property. TweenBases can also be called directly through the module. 
+
 
 ### **`Faders:Create(Instance)`**
 
@@ -13,7 +15,9 @@ Creates a new fader for the specified Roblox `Instance` **and its descendants.**
 - **Parameters**:
   - `Instance`: The Roblox `Instance` you want to apply fading to (**and its descendants**).
 - **Returns**: A `FaderBase` object with methods to control fading animations.
-- **Note**: Note that the instance and all of it's descendants will all be affected by the animations.
+- **Notes**:
+  - The instance and all of it's descendants will all be affected by the animations.
+  - **YOU MUST RUN :PLAY ON THE TWEENBASE OR USE `faders:Play()` FOR THE ANIMATION TO CONTINUE**
 
 **Example**:
 ```lua

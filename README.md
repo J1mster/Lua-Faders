@@ -1,4 +1,4 @@
-
+![Banner](https://media.discordapp.net/attachments/1276773945080545304/1277376436717621329/FadersDocumentation.png?ex=66ccf103&is=66cb9f83&hm=b85f50624ffa44a587b479b4e5a79c69d7a936feaeec6216cacc136ff103fd29&=&format=webp&quality=lossless)
 
 ---
 

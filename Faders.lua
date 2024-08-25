@@ -1,4 +1,4 @@
-_=[=[ 
+_=[=[
 __________________________________________________________________________
 __  ___/__(_)__  /__   _______________  ____/__  ____/__  /__  __ \_  ___/
 _____ \__  /__  /__ | / /  _ \_  ___/  /    ______ \ __  / _  / / /  __ \ 
@@ -107,7 +107,6 @@ function Faders:Play(Fader : {Instance : Instance, In : {[Instance] : {[string] 
 			local InstanceTween = TweenService:Create(Instance, FadeInfo, Properties)
 	
 			table.insert(thisTask[2], InstanceTween)
-			InstanceTween.Completed:Connect(function(PS) FaderCompletedBinds[Fader]:Fire(PS) end)
 			InstanceTween:Play()
 		end
 		
@@ -122,6 +121,7 @@ function Faders:Play(Fader : {Instance : Instance, In : {[Instance] : {[string] 
 			end
 		end
 		
+		FaderCompletedBinds[Fader]:Fire(PS)
 		FaderCourotines[Fader.Instance] = nil
 	end)
 end

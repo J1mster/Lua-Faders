@@ -8,11 +8,12 @@
 
 ### **`Faders:Create(Instance)`**
 
-Creates a new fader for the specified Roblox `Instance` and its descendants. This method identifies all properties that can be faded (such as `BackgroundTransparency`, `TextTransparency`, `Transparency`, `PlaceholderColor3`, etc.) and stores their initial and target states. It returns a `FaderBase` object that can be used to control the fade animations for the `Instance`.
+Creates a new fader for the specified Roblox `Instance` **and its descendants.** This method identifies all properties that can be faded (such as `BackgroundTransparency`, `TextTransparency`, `Transparency`, `PlaceholderColor3`, etc.) and stores their initial and target states. It returns a `FaderBase` object that can be used to control the fade animations for the `Instance`.
 
 - **Parameters**:
-  - `Instance`: The Roblox `Instance` you want to apply fading to (and its descendants).
+  - `Instance`: The Roblox `Instance` you want to apply fading to (**and its descendants**).
 - **Returns**: A `FaderBase` object with methods to control fading animations.
+- **Note**: Note that the instance and all of it's descendants will all be affected by the animations.
 
 **Example**:
 ```lua

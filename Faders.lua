@@ -5,7 +5,7 @@ _____ \__  /__  /__ | / /  _ \_  ___/  /    ______ \ __  / _  / / /  __ \
 ____/ /_  / _  / __ |/ //  __/  /   / /___   ____/ / _  /__/ /_/ // /_/ / 
 /____/ /_/  /_/  _____/ \___//_/    \____/  /_____/  /____/\____/ \____/  
 					 _               ___        _            
-Version  	4.0.1			| |  _  _ __ _  | __|_ _ __| |___ _ _ ___
+Version  	4.0			| |  _  _ __ _  | __|_ _ __| |___ _ _ ___
 Last Edited Aug 25, 2024		| |_| || / _` | | _/ _` / _` / -_) '_(_-<
 Author 		SilverC5Z06		|____\_,_\__,_| |_|\__,_\__,_\___|_| /__/
 
@@ -91,11 +91,11 @@ function Faders:Create(Instance : Instance)
 
 	function FaderBase:Play(Direction, FadeInfo)
 		Faders:Play(FaderBase, Direction, FadeInfo) 
-	end; function FaderBase:Pause(Direction, FadeInfo)
+	end; function FaderBase:Pause()
 		Faders:Pause(FaderBase) 
-	end; function FaderBase:Resume(Direction, FadeInfo)
+	end; function FaderBase:Resume()
 		Faders:Resume(FaderBase) 
-	end; function FaderBase:Cancel(Direction, FadeInfo)
+	end; function FaderBase:Cancel()
 		Faders:Cancel(FaderBase) 
 	end; 
 

@@ -32,11 +32,22 @@ local Object = Instance
 local Faders = {}
 local FaderCourotines = {}
 local FaderCompletedBinds = {}
-local Properties = {BackgroundTransparency = "Number", TextTransparency = "Number", Transparency = "Number", PlaceholderColor3 = "Color3"}
+local Properties = {BackgroundTransparency = "Number", ImageTransparency = "Number", TextTransparency = "Number", TextStrokeTransparency = "Number", 
+	Transparency = "Number", 
+	PlaceholderColor3 = "Color3"
+}
+
+
+
 local OutValues = {Number = 1, Color3 = Color3.new(0, 0, 0)}
 
-function ValidateProperty(Instance, Property)
-	return pcall(function() return Instance[Property] end)
+function ValidateProperty(Instance : Instance, Property)
+	return pcall(function() 
+		if Property=="Transparency" and (Instance:IsA("TextBox") or Instance:IsA("TextLabel") or Instance:IsA("TextButton")) then 
+			error("")
+		end
+		return Instance[Property] 
+	end)
 end
 
 function GetProperties(Instance)
@@ -61,15 +72,23 @@ function Faders:Create(Instance : Instance)
 
 			In[Instance] = In[Instance] or {}
 			Out[Instance] = Out[Instance] or {}
-
+			
+			
+			
+			
+			warn(Property)
+			warn(Instance[Property])
 			In[Instance][Property] = Instance[Property]
 			Out[Instance][Property] = OutValues[Properties[Property]]
+			
+			
+			
 		end
 	end
-	
-	
+
+
 	local FaderBase = {Instance = Instance, In = In, Out=Out}
-	
+
 	function FaderBase:Play(Direction, FadeInfo)
 		Faders:Play(FaderBase, Direction, FadeInfo) 
 	end; function FaderBase:Pause(Direction, FadeInfo)
@@ -79,51 +98,81 @@ function Faders:Create(Instance : Instance)
 	end; function FaderBase:Cancel(Direction, FadeInfo)
 		Faders:Cancel(FaderBase) 
 	end; 
-	
+
 	local CompletedBind = Object.new("BindableEvent") -- Renamed from Instance.new earlier
 	FaderBase.Completed = CompletedBind.Event
 	
 	FaderCompletedBinds[FaderBase] = CompletedBind
-	
-	
+
+
 	return FaderBase
 end
 
 
 function Faders:Play(Fader : {Instance : Instance, In : {[Instance] : {[string] : any}}, Out : {[Instance] : {[string] : any}}}, Direction : "In" | "Out", FadeInfo : TweenInfo | number)
+	task.wait()
 	
 	local FadeInfo : TweenInfo = (typeof(FadeInfo)=="number" and TweenInfo.new(FadeInfo)) or (typeof(FadeInfo)=="TweenInfo" and FadeInfo) or TweenInfo.new(0.1)
 	
-	if FaderCourotines[Fader.Instance] then coroutine.close(FaderCourotines[Fader.Instance][1]) for _, Tween in FaderCourotines[Fader.Instance][2] do Tween:Pause(); Tween:Destroy() end end
+
+	
+	if FaderCourotines[Fader.Instance] then 
+		task.spawn(function()
+
+			for _, Tween in FaderCourotines[Fader.Instance][2] do 
+				Tween:Pause()
+				Tween:Destroy()  
+			end 
+			
+			coroutine.yield(FaderCourotines[Fader.Instance][1]) 
+			coroutine.close(FaderCourotines[Fader.Instance][1]) 
+
+		end)
+	end
+	
+	
+	
+
+	task.wait(0.02)
+	
+	
 	
 	
 	local thisTask = {[2] = {}}
-	
-	FaderCourotines[Fader.Instance] = thisTask
 
-	thisTask[1] = coroutine.wrap(function()
+	FaderCourotines[Fader.Instance] = thisTask
+	
+	
+	thisTask[1] = coroutine.create(function()
 
 		for Instance, Properties in Fader[Direction] do 
+			
+			print(Instance, FadeInfo, Properties)
+			
 			local InstanceTween = TweenService:Create(Instance, FadeInfo, Properties)
-	
+
 			table.insert(thisTask[2], InstanceTween)
 			InstanceTween:Play()
 		end
-		
-		
-		
+
+
+
 		task.wait(FadeInfo.Time)
+		
 		if FaderCourotines[Fader.Instance] then 
+			coroutine.yield(FaderCourotines[Fader.Instance][1])
 			coroutine.close(FaderCourotines[Fader.Instance][1])
-			
+
 			for _, Tween in FaderCourotines[Fader.Instance][2] do
 				Tween:Pause(); Tween:Destroy()
 			end
 		end
-		
+
 		FaderCompletedBinds[Fader]:Fire(PS)
 		FaderCourotines[Fader.Instance] = nil
 	end)
+	
+	coroutine.resume(thisTask[1])
 end
 
 
@@ -132,7 +181,7 @@ function Faders:Pause(Fader : {Instance : Instance, In : {[Instance] : {[string]
 
 	if FaderCourotines[Fader.Instance] then 
 		coroutine.yield(FaderCourotines[Fader.Instance][1]) 
-		
+
 		for _, Tween in FaderCourotines[Fader.Instance][2] do 
 			Tween:Pause()
 		end 
@@ -155,6 +204,7 @@ end
 function Faders:Cancel(Fader : {Instance : Instance, In : {[Instance] : {[string] : any}}, Out : {[Instance] : {[string] : any}}})
 
 	if FaderCourotines[Fader.Instance] then 
+		coroutine.yield(FaderCourotines[Fader.Instance][1])
 		coroutine.close(FaderCourotines[Fader.Instance][1]) 
 
 		for _, Tween in FaderCourotines[Fader.Instance][2] do 
@@ -170,13 +220,14 @@ end
 function Faders:Destroy(Fader : {Instance : Instance, In : {[Instance] : {[string] : any}}, Out : {[Instance] : {[string] : any}}})
 
 	if FaderCourotines[Fader.Instance] then 
+		coroutine.yield(FaderCourotines[Fader.Instance][1])
 		coroutine.close(FaderCourotines[Fader.Instance][1]) 
 
 		for _, Tween in FaderCourotines[Fader.Instance][2] do 
 			Tween:Pause();
 			Tween:Destroy()
 		end 
-		
+
 		FaderCourotines[Fader.Instance] = nil
 	end
 end

@@ -76,8 +76,7 @@ function Faders:Create(Instance : Instance)
 			
 			
 			
-			warn(Property)
-			warn(Instance[Property])
+	
 			In[Instance][Property] = Instance[Property]
 			Out[Instance][Property] = OutValues[Properties[Property]]
 			
